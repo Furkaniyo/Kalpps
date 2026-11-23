@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sana Özel</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Lüks Serif (Cinzel Decorative & Playfair Display) ve Zarif Sans (Montserrat) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+
+  <style>
+    /* Özel Lüks Animasyonlar ve Efektler */
+    :root {
+      --gold-light: #fff3b0;
+      --gold-mid: #d4af37;
+      --gold-dark: #996515;
+      --ruby-light: #ff1e56;
+      --ruby-dark: #4a0010;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #2b050d 0%, #140105 60%, #050001 100%);
+      font-family: 'Montserrat', sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Kadife Doku Efekti */
+    .velvet-overlay {
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(212, 175, 55, 0.04) 1px, transparent 0);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Lüks Altın Çerçeveli Yakut Buton */
+    .luxury-btn {
+      position: relative;
+      background: linear-gradient(135deg, #800018 0%, #3d000b 50%, #660013 100%);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.8),
+        0 0 25px rgba(212, 175, 55, 0.35),
+        inset 0 0 15px rgba(255, 215, 0, 0.25);
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      animation: btnBreathe 3s infinite ease-in-out;
+    }
+
+    /* Butonun Altın Kenarlığı */
+    .luxury-btn::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 9999px;
+      background: linear-gradient(45deg, #996515, #fff3b0, #d4af37, #996515, #fff3b0);
+      background-size: 300% 300%;
+      z-index: -1;
+      animation: goldBorderShift 4s linear infinite;
+    }
+
+    /* Buton Üzerinden Geçen Işık Yansıması */
+    .luxury-btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 243, 176, 0.4), transparent);
+      transform: skewX(-25deg);
+      animation: shimmerSweep 3.5s infinite;
+    }
+
+    .luxury-btn:hover {
+      transform: scale(1.06) translateY(-2px);
+      box-shadow: 
+        0 20px 45px rgba(0, 0, 0, 0.9),
+        0 0 40px rgba(212, 175, 55, 0.65),
+        inset 0 0 20px rgba(255, 215, 0, 0.4);
+    }
+
+    .luxury-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Buton Kaybolma Animasyonu */
+    .btn-vanish {
+      animation: vanishBurst 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+      pointer-events: none;
+    }
+
+    /* Cam Efekti (Glassmorphism) ve Altın Kart */
+    .luxury-card {
+      background: linear-gradient(145deg, rgba(45, 4, 14, 0.72) 0%, rgba(18, 1, 5, 0.88) 100%);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.85),
+        0 0 50px rgba(220, 20, 60, 0.25),
+        inset 0 0 30px rgba(212, 175, 55, 0.12);
+      opacity: 0;
+      transform: scale(0.85) translateY(30px);
+      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .luxury-card.revealed {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Parlayan Altın ve Yakut Başlık Yazısı */
+    .gold-shimmer-text {
+      font-family: 'Cinzel Decorative', 'Playfair Display', serif;
+      background: linear-gradient(
+        to right,
+        #d4af37 0%,
+        #fff6cc 25%,
+        #ffccd5 50%,
+        #fff6cc 75%,
+        #d4af37 100%
+      );
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: textShimmer 4s linear infinite, heartBeatPulse 2.4s infinite ease-in-out;
+      filter: drop-shadow(0 4px 15px rgba(212, 175, 55, 0.35));
+    }
+
+    /* Keyframe Animasyonları */
+    @keyframes btnBreathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    @keyframes goldBorderShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes shimmerSweep {
+      0% { left: -100%; }
+      40%, 100% { left: 200%; }
+    }
+
+    @keyframes vanishBurst {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: brightness(1);
+      }
+      40% {
+        opacity: 1;
+        transform: scale(1.25);
+        filter: brightness(2.5) drop-shadow(0 0 30px #fff3b0);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.2);
+        filter: blur(10px);
+      }
+    }
+
+    @keyframes textShimmer {
+      to { background-position: 200% center; }
+    }
+
+    @keyframes heartBeatPulse {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.04); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.03); }
+      70% { transform: scale(1); }
+    }
+
+    /* Köşe Süslemeleri */
+    .corner-ornament {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-color: #d4af37;
+      opacity: 0.75;
+    }
+  </style>
+</head>
+<body class="h-screen w-screen flex items-center justify-center relative">
+
+  <!-- Kadife Doku Katmanı -->
+  <div class="velvet-overlay"></div>
+
+  <!-- Arka Plan ve Parçacık Efektleri Canvas -->
+  <canvas id="luxuryCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-10"></canvas>
+
+  <!-- Merkez Etkileşim Alanı -->
+  <main class="relative z-20 flex flex-col items-center justify-center w-full px-4">
+    
+    <!-- Başlangıç Butonu -->
+    <div id="btnWrapper" class="flex flex-col items-center">
+      <button id="revealBtn" class="luxury-btn px-10 py-5 sm:px-14 sm:py-6 rounded-full flex items-center gap-3 cursor-pointer overflow-hidden group">
+        <!-- Altın Kalp İkonu -->
+        <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#fff3b0] drop-shadow-[0_0_8px_rgba(255,215,0,0.8)] transition-transform duration-500 group-hover:scale-125" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <span class="text-lg sm:text-2xl font-semibold tracking-[0.25em] uppercase text-[#fff6cc]" style="font-family: 'Playfair Display', serif;">
+          Sana Özel
+        </span>
+      </button>
+      <p class="mt-4 text-xs sm:text-sm tracking-[0.3em] uppercase text-[#d4af37]/70 animate-pulse">
+        Dokun
+      </p>
+    </div>
+
+    <!-- Ortaya Çıkan Lüks Mesaj Kartı -->
+    <div id="messageCard" class="luxury-card hidden relative w-full max-w-2xl rounded-3xl p-8 sm:p-14 text-center mx-auto">
+      <!-- Zarif Altın Köşe Çerçeveleri -->
+      <div class="corner-ornament top-4 left-4 border-t-2 border-l-2 rounded-tl-xl"></div>
+      <div class="corner-ornament top-4 right-4 border-t-2 border-r-2 rounded-tr-xl"></div>
+      <div class="corner-ornament bottom-4 left-4 border-b-2 border-l-2 rounded-bl-xl"></div>
+      <div class="corner-ornament bottom-4 right-4 border-b-2 border-r-2 rounded-br-xl"></div>
+
+      <!-- Üst Dekoratif Altın Çizgi ve Elmas -->
+      <div class="flex items-center justify-center gap-3 mb-6 opacity-80">
+        <div class="h-[1px] w-12 sm:w-20 bg-gradient-to-r from-transparent to-[#d4af37]"></div>
+        <div class="w-2.5 h-2.5 rotate-45 border border-[#fff3b0] bg-[#d4af37]"></div>
+        <div class="h-[1px] w-12 sm:w-20 bg-gradient-to-l from-transparent to-[#d4af37]"></div>
+      </div>
+
+      <!-- Ana Mesaj -->
+      <h1 class="gold-shimmer-text text-3xl sm:text-5xl md:text-6xl font-black tracking-wider leading-tight py-2">
+        SENİ SEVİYORUM<br>
+        <span class="block mt-2 sm:mt-3 text-4xl sm:text-6xl md:text-7xl">DİLAMM</span>
+      </h1>
+
+      <!-- Alt Dekoratif Kalp ve Çizgi -->
+      <div class="flex items-center justify-center gap-4 mt-7 opacity-90">
+        <div class="h-[1px] w-16 sm:w-28 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent"></div>
+        <svg class="w-6 h-6 text-[#ff1e56] drop-shadow-[0_0_12px_rgba(255,30,86,0.9)] animate-bounce" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <div class="h-[1px] w-16 sm:w-28 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    /**
+     * Lüks Parçacık, Altın Tozu ve 3D Görünümlü Yakut Kalp Motoru
+     */
+    const canvas = document.getElementById('luxuryCanvas');
+    const ctx = canvas.getContext('2d');
+    const revealBtn = document.getElementById('revealBtn');
+    const btnWrapper = document.getElementById('btnWrapper');
+    const messageCard = document.getElementById('messageCard');
+
+    let width, height;
+    let isRevealed = false;
+
+    // Parçacık dizileri
+    let ambientDust = [];
+    let sparkles = [];
+    let floatingHearts = [];
+    let goldConfetti = [];
+
+    // Ekran boyutlandırma
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // 1. Ortam Altın Tozu Sınıfı (Başlangıçtan itibaren süzülür)
+    class GoldDust {
+      constructor() {
+        this.reset(true);
+      }
+      reset(initial = false) {
+        this.x = Math.random() * width;
+        this.y = initial ? Math.random() * height : height + 10;
+        this.size = Math.random() * 2.2 + 0.6;
+        this.speedY = -(Math.random() * 0.4 + 0.15);
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.alpha = Math.random() * 0.6 + 0.2;
+        this.twinkleSpeed = Math.random() * 0.03 + 0.01;
+        this.phase = Math.random() * Math.PI * 2;
+      }
+      update() {
+        this.x += this.speedX + Math.sin(this.phase) * 0.15;
+        this.y += this.speedY;
+        this.phase += this.twinkleSpeed;
+        if (this.y < -10) this.reset();
+      }
+      draw() {
+        const currentAlpha = this.alpha * (0.6 + 0.4 * Math.sin(this.phase));
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 223, 128, ${currentAlpha})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#d4af37';
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // 2. Buton Tıklama Patlama Kıvılcımı Sınıfı
+    class SparkleBurst {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 9 + 2;
+        this.vx = Math.cos(angle) * velocity;
+        this.vy = Math.sin(angle) * velocity;
+        this.size = Math.random() * 3.5 + 1.5;
+        this.life = 1;
+        this.decay = Math.random() * 0.02 + 0.012;
+        this.isGold = Math.random() > 0.25;
+      }
+      update() {
+        this.vx *= 0.96;
+        this.vy *= 0.96;
+        this.vy += 0.08; // Hafif yerçekimi
+        this.x += this.vx;
+        this.y += this.vy;
+        this.life -= this.decay;
+      }
+      draw() {
+        if (this.life <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = this.life;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.isGold ? '#fff3b0' : '#ff1e56';
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = this.isGold ? '#d4af37' : '#ff0040';
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // 3. 3D Görünümlü Parlak Yakut Kırmızı Kalp Sınıfı
+    class GlossyHeart {
+      constructor(burstMode = false) {
+        this.reset(burstMode);
+      }
+      reset(burstMode = false) {
+        this.size = Math.random() * 24 + 14; // 14px - 38px arası
+        this.x = burstMode 
+          ? width / 2 + (Math.random() - 0.5) * 180 
+          : Math.random() * width;
+        this.y = burstMode 
+          ? height / 2 + (Math.random() - 0.5) * 100 
+          : height + this.size * 2;
+        
+        this.speedY = burstMode 
+          ? -(Math.random() * 4.5 + 2.5) 
+          : -(Math.random() * 2.2 + 1.2);
+        
+        this.swayAmplitude = Math.random() * 2.2 + 0.8;
+        this.swayFrequency = Math.random() * 0.025 + 0.01;
+        this.phase = Math.random() * Math.PI * 2;
+        this.rotation = (Math.random() - 0.5) * 0.5;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.015;
+        this.scale3D = Math.random() * Math.PI * 2;
+        this.scale3DSpeed = Math.random() * 0.04 + 0.015;
+        this.opacity = Math.random() * 0.35 + 0.65;
+      }
+      update() {
+        this.y += this.speedY;
+        this.phase += this.swayFrequency;
+        this.x += Math.sin(this.phase) * this.swayAmplitude;
+        this.rotation += this.rotationSpeed;
+        this.scale3D += this.scale3DSpeed;
+
+        // Yukarıdan çıkınca alttan tekrar başlat
+        if (this.y < -this.size * 2.5) {
+          this.reset(false);
+        }
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        
+        // 3D Dönüş İllüzyonu (Yatay ölçekleme)
+        const flipScale = 0.75 + 0.25 * Math.cos(this.scale3D);
+        ctx.scale(flipScale, 1);
+        ctx.globalAlpha = this.opacity;
+
+        const s = this.size;
+
+        // Kalp Yolu (Path)
+        ctx.beginPath();
+        ctx.moveTo(0, s * 0.3);
+        ctx.bezierCurveTo(-s * 0.5, -s * 0.3, -s, s * 0.1, 0, s);
+        ctx.bezierCurveTo(s, s * 0.1, s * 0.5, -s * 0.3, 0, s * 0.3);
+        ctx.closePath();
+
+        // 3D Yakut Gradyan Dolgu
+        const grad = ctx.createRadialGradient(-s * 0.25, s * 0.15, s * 0.05, 0, s * 0.4, s);
+        grad.addColorStop(0, '#ff758f');   // Parlak ışık yansıması
+        grad.addColorStop(0.35, '#e0113c'); // Canlı yakut kırmızı
+        grad.addColorStop(0.8, '#800018');  // Derin kadife bordo
+        grad.addColorStop(1, '#3d000b');    // Gölge kenar
+
+        ctx.fillStyle = grad;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = 'rgba(224, 17, 60, 0.5)';
+        ctx.fill();
+
+        // İnce Altın Kontur Işıltısı
+        ctx.lineWidth = 0.8;
+        ctx.strokeStyle = 'rgba(255, 223, 128, 0.45)';
+        ctx.stroke();
+
+        // Cam / Kristal Parlama Noktası (Glossy Highlight)
+        ctx.beginPath();
+        ctx.ellipse(-s * 0.32, s * 0.18, s * 0.14, s * 0.07, -Math.PI / 4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+        ctx.fill();
+
+        ctx.restore();
+      }
+    }
+
+    // 4. Altın Varak Konfeti Sınıfı
+    class GoldConfetti {
+      constructor() {
+        this.reset(true);
+      }
+      reset(initial = false) {
+        this.x = Math.random() * width;
+        this.y = initial ? height + Math.random() * height : height + 20;
+        this.w = Math.random() * 8 + 4;
+        this.h = Math.random() * 5 + 3;
+        this.speedY = -(Math.random() * 2.5 + 1.2);
+        this.speedX = (Math.random() - 0.5) * 1.5;
+        this.tilt = Math.random() * Math.PI * 2;
+        this.tiltSpeed = Math.random() * 0.08 + 0.03;
+        this.colors = ['#fff3b0', '#d4af37', '#f5cb5c', '#aa7c11'];
+        this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX + Math.sin(this.tilt) * 0.6;
+        this.tilt += this.tiltSpeed;
+        if (this.y < -20) this.reset(false);
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.tilt);
+        ctx.scale(Math.cos(this.tilt), 1);
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = 'rgba(212, 175, 55, 0.6)';
+        ctx.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
+        ctx.restore();
+      }
+    }
+
+    // Başlangıç Ortam Altın Tozlarını Oluştur
+    for (let i = 0; i < 65; i++) {
+      ambientDust.push(new GoldDust());
+    }
+
+    // Buton Tıklama Olayı
+    revealBtn.addEventListener('click', (e) => {
+      if (isRevealed) return;
+      isRevealed = true;
+
+      // Butonun merkez koordinatlarını al
+      const rect = revealBtn.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      // 1. Altın Kıvılcım Patlaması Oluştur
+      for (let i = 0; i < 95; i++) {
+        sparkles.push(new SparkleBurst(centerX, centerY));
+      }
+
+      // 2. Butonu Zarifçe Kaybet
+      revealBtn.classList.add('btn-vanish');
+      setTimeout(() => {
+        btnWrapper.style.display = 'none';
+      }, 750);
+
+      // 3. Sürekli Süzülen 3D Yakut Kalpleri ve Altın Konfetileri Başlat
+      const heartCount = window.innerWidth < 640 ? 32 : 55;
+      for (let i = 0; i < heartCount; i++) {
+        floatingHearts.push(new GlossyHeart(true));
+      }
+
+      const confettiCount = window.innerWidth < 640 ? 35 : 65;
+      for (let i = 0; i < confettiCount; i++) {
+        goldConfetti.push(new GoldConfetti());
+      }
+
+      // 4. Lüks Mesaj Kartını Ortaya Çıkar
+      setTimeout(() => {
+        messageCard.classList.remove('hidden');
+        // Reflow tetikle
+        void messageCard.offsetWidth;
+        messageCard.classList.add('revealed');
+      }, 350);
+    });
+
+    // Ekrana tıklanınca ekstra kıvılcım oluşturma (Kart açıldıktan sonra etkileşim)
+    window.addEventListener('pointerdown', (e) => {
+      if (!isRevealed) return;
+      for (let i = 0; i < 18; i++) {
+        sparkles.push(new SparkleBurst(e.clientX, e.clientY));
+      }
+    });
+
+    // Ana Animasyon Döngüsü
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Ortam altın tozları
+      for (let dust of ambientDust) {
+        dust.update();
+        dust.draw();
+      }
+
+      // Tıklama sonrası animasyonlar
+      if (isRevealed) {
+        for (let conf of goldConfetti) {
+          conf.update();
+          conf.draw();
+        }
+        for (let heart of floatingHearts) {
+          heart.update();
+          heart.draw();
+        }
+      }
+
+      // Patlama kıvılcımları
+      for (let i = sparkles.length - 1; i >= 0; i--) {
+        sparkles[i].update();
+        sparkles[i].draw();
+        if (sparkles[i].life <= 0) {
+          sparkles.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Sayfa yüklendiğinde döngüyü başlat
+    window.onload = function() {
+      animate();
+    };
+  </script>
+</body>
+</html>
